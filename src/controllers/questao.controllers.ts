@@ -1,45 +1,59 @@
 import { Request, Response } from 'express'
 import { Questao } from '../types/questao'
 import { randomUUID } from 'crypto'
+import { Prisma, PrismaClient } from '@prisma/client'
 
-const banco: Questao[] = []
+const prisma = new PrismaClient()
 
-export const listar = (req: Request, res: Response) => {
-  res.json(banco)
+export const listar = async (req: Request, res: Response) => {
+  const questoes = await prisma.questao.findMany()
+  res.json(questoes)
 }
 
-export const buscarPorId = (req: Request, res: Response) => {
+export const buscarPorId = async (req: Request, res: Response) => {
   const { id } = req.params
-  const questao = banco.find(q => q.id === id)
+  const questao = await prisma.questao.findUnique({ where : { id }})
+ 
   if (!questao)
     return res.status(404).json({ mensagem: 'Questão não encontrada' })
   res.json(questao)
 }
 
-export const criar = (req: Request, res: Response) => {
-  const id = randomUUID()
-  const dados = req.body
-  const novaQuestao = { ...dados, id }
-  banco.push(novaQuestao)
-  res.status(201).json(novaQuestao)
+export const criar = async (req: Request, res: Response) => {
+  try{
+    const novaQuestao = await prisma.questao.create({
+      data:req.body
+    })
+    res.status(201).json(novaQuestao)
+  }
+  catch(erro){
+    res.status(400).json({ erro: 'Erro ao criar a questão', detalhes: erro })
+  }
 }
 
-export const atualizar = (req: Request, res: Response) => {
+export const atualizar = async (req: Request, res: Response) => {
   const { id } = req.params
-  const index = banco.findIndex(q => q.id === id)
-  if (index === -1) 
-    return res.status(404).json({ mensagem: 'Questão não encontrada' })
 
-  banco[index] = { ...banco[index], ...req.body }
-  res.json(banco[index])
+  try{
+    const questaoAtualizada = await prisma.questao.update({
+      where: { id },
+      data: req.body
+    })
+    res.json(questaoAtualizada)
+  }
+  catch(erro){
+    res.status(404).json({ mensagem: 'Questão não encontrada'})
+  }
 }
 
-export const remover = (req: Request, res: Response) => {
+export const remover = async (req: Request, res: Response) => {
   const { id } = req.params
-  const index = banco.findIndex(q => q.id === id)
-  if (index === -1) 
-    return res.status(404).json({ mensagem: 'Questão não encontrada' })
 
-  banco.splice(index, 1)
-  res.status(204).send()
+  try{
+    await prisma.questao.delete({ where: { id }})
+    res.status(204).send()
+  }
+  catch(erro){
+    res.status(404).json({ mensagem: 'Questão não encontrada'})
+  }
 }
