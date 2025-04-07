@@ -19,6 +19,6 @@ model Questao {
   alternativaC String
   alternativaD String
   alternativaE String
-  respostaCorreta String @db.Char(1)
+  respostaCorreta String
   peso Int
 }
