@@ -1,13 +1,22 @@
 import { Router } from "express";
-import * as QuestaoController from '../controllers/questao.controllers'
+
+const controller = require('../controllers/questao.controllers')
+
+const {
+  listar,
+  buscarPorId,
+  criar,
+  atualizar,
+  remover
+} = controller
 
 const router = Router()
 
-router.get('/', QuestaoController.listar)
-router.get('/:id', QuestaoController.buscarPorId)
-router.post('/', QuestaoController.criar)
-router.put('/:id', QuestaoController.atualizar)
-router.delete('/:id', QuestaoController.remover)
+router.get('/', listar)
+router.get('/:id', buscarPorId)
+router.post('/', criar)
+router.put('/:id', atualizar)
+router.delete('/:id', remover)
 
 
 export default router

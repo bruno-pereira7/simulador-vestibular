@@ -11,7 +11,8 @@ export const listar = (req: Request, res: Response) => {
 export const buscarPorId = (req: Request, res: Response) => {
   const { id } = req.params
   const questao = banco.find(q => q.id === id)
-  if (!questao) return res.status(404).json({ mensagem: 'Questão não encontrada' })
+  if (!questao)
+    return res.status(404).json({ mensagem: 'Questão não encontrada' })
   res.json(questao)
 }
 
@@ -26,7 +27,8 @@ export const criar = (req: Request, res: Response) => {
 export const atualizar = (req: Request, res: Response) => {
   const { id } = req.params
   const index = banco.findIndex(q => q.id === id)
-  if (index === -1) return res.status(404).json({ mensagem: 'Questão não encontrada' })
+  if (index === -1) 
+    return res.status(404).json({ mensagem: 'Questão não encontrada' })
 
   banco[index] = { ...banco[index], ...req.body }
   res.json(banco[index])
@@ -35,7 +37,8 @@ export const atualizar = (req: Request, res: Response) => {
 export const remover = (req: Request, res: Response) => {
   const { id } = req.params
   const index = banco.findIndex(q => q.id === id)
-  if (index === -1) return res.status(404).json({ mensagem: 'Questão não encontrada' })
+  if (index === -1) 
+    return res.status(404).json({ mensagem: 'Questão não encontrada' })
 
   banco.splice(index, 1)
   res.status(204).send()
