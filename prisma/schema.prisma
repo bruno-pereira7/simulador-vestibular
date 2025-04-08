@@ -21,4 +21,27 @@ model Questao {
   alternativaE String
   respostaCorreta String
   peso Int
+
+  simulados SimuladoQuestao[]
 }
+
+model Simulado {
+  id String @id @default(uuid())
+  nome String 
+  criadoEm DateTime @default(now())
+
+  questoes SimuladoQuestao[]
+}
+
+model SimuladoQuestao {
+  id String @id @default(uuid())
+  questaoId String
+  simuladoId String
+  posicao Int
+
+  questao Questao @relation(fields: [questaoId], references: [id])
+  simulado Simulado @relation(fields: [simuladoId], references: [id])
+
+  @@unique([simuladoId, posicao])
+}
+
