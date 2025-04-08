@@ -1,8 +1,8 @@
 export interface SimuladoCreateBody{
-  nome: String
+  nome: string
 }
 
 export interface AdicionarQuestaoBody{
-  questaoId: String
+  questaoId: string
   posicao: number
 }
