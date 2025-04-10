@@ -1,5 +1,6 @@
 import { Router } from "express";
-import { listar,
+import { contar,
+  listar,
   buscarPorId,
   criar,
   atualizar,
@@ -8,6 +9,7 @@ import { listar,
 
 const router = Router()
 
+router.get('/count', contar)
 router.get('/', listar)
 router.get('/:id', buscarPorId)
 router.post('/', criar)
