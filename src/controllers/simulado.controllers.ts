@@ -5,14 +5,10 @@ import { SimuladoCreateBody, AdicionarQuestaoBody } from "../types/simulado";
 const prisma = new PrismaClient()
 
 export const criarSimulado = async (req: Request, res: Response) => {
-  try{
-    const { nome, curso } = req.body as SimuladoCreateBody;
+  try {
+    const { nome, curso } = req.body as SimuladoCreateBody
 
-    const simulado = await prisma.simulado.create({
-      data: { nome, curso }
-    })
-    
-    const distribuição: Record<string,number> = {
+    const distribuicao: Record<string, number> = {
       Português: 5,
       Matemática: 5,
       Física: 5,
@@ -22,39 +18,71 @@ export const criarSimulado = async (req: Request, res: Response) => {
       Geografia: 5,
       Inglês: 5,
       Raciocínio: 5,
-      Interpretação: 5
+      Interpretação: 5,
     }
-    let posicao = 1
 
-    for (const materia in distribuição){
-      const quantidade = distribuição[materia]
+    const faltando: string[] = []
 
-      const questoes = await prisma.questao.findMany({
-        where: {
-          materia
-        },
-        take: quantidade
+    for (const materia of Object.keys(distribuicao)) {
+      const necessario = distribuicao[materia]
+      const existentes = await prisma.questao.count({
+        where: { materia },
       })
 
-      for(const questao of questoes){
+      if (existentes < necessario) {
+        faltando.push(`${materia} (faltam ${necessario - existentes})`)
+      }
+    }
+
+    if (faltando.length > 0) {
+      return res.status(400).json({
+        erro: 'Não há questões suficientes para montar o simulado.',
+        faltando,
+      })
+    }
+
+    const simulado = await prisma.simulado.create({
+      data: { nome, curso },
+    })
+
+    let posicao = 1
+
+    for (const materia of Object.keys(distribuicao)) {
+      const quantidade = distribuicao[materia]
+
+      const questoes = await prisma.questao.findMany({
+        where: { materia },
+        take: quantidade,
+      })
+
+      if (questoes.length < quantidade) {
+        return res.status(400).json({
+          erro: `A matéria "${materia}" não possui questões suficientes no momento.`,
+          requisitadas: quantidade,
+          encontradas: questoes.length,
+        })
+      }
+
+      for (const questao of questoes) {
         await prisma.simuladoQuestao.create({
           data: {
             simuladoId: simulado.id,
             questaoId: questao.id,
-            posicao: posicao++
-          }
+            posicao: posicao++,
+          },
         })
       }
     }
 
     return res.status(201).json({
-      mensagem:'Simulado criado com Sucesso',
-      simuladoId: simulado.id
+      mensagem: 'Simulado criado com sucesso',
+      simuladoId: simulado.id,
     })
-  }
-
-  catch(erro){
-    return res.status(500).json({ erro: 'Erro ao criar simulado', detalhes: erro})
+  } catch (erro) {
+    console.error('Erro ao criar simulado:', erro)
+    return res
+      .status(500)
+      .json({ erro: 'Erro ao criar simulado', detalhes: erro })
   }
 }
 
