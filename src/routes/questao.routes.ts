@@ -1,14 +1,10 @@
 import { Router } from "express";
-
-const controller = require('../controllers/questao.controllers')
-
-const {
-  listar,
+import { listar,
   buscarPorId,
   criar,
   atualizar,
   remover
-} = controller
+} from '../controllers/questao.controllers'
 
 const router = Router()
 

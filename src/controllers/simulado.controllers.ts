@@ -31,8 +31,7 @@ export const criarSimulado = async (req: Request, res: Response) => {
 
       const questoes = await prisma.questao.findMany({
         where: {
-          materia,
-          curso
+          materia
         },
         take: quantidade
       })
