@@ -8,7 +8,7 @@ const app = express()
 app.use(cors());
 app.use(express.json());
 
-app.use(rotaSimulados)
+app.use('/simulados',rotaSimulados)
 app.use('/questoes', rotaQuestoes)
 
 app.listen(3333, () => {

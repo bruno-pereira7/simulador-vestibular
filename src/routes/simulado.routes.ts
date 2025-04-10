@@ -7,8 +7,8 @@ import {
 
 const router = Router()
 
-router.post("/simulados",criarSimulado)
-router.get('/simulados', listarSimulados)
-router.get('/simulados', listarQuestoesDoSimulado)
+router.post('/',criarSimulado)
+router.get('/', listarSimulados)
+router.get('/:id/questoes', listarQuestoesDoSimulado)
 
 export default router
