@@ -28,6 +28,7 @@ model Questao {
 model Simulado {
   id String @id @default(uuid())
   nome String 
+  curso String
   criadoEm DateTime @default(now())
 
   questoes SimuladoQuestao[]
