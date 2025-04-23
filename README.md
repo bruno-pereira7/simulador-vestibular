@@ -29,7 +29,7 @@ O **Simulador de Vestibular** é uma aplicação desenvolvida com Node.js, Expre
 - [Express](https://expressjs.com/)
 - [TypeScript](https://www.typescriptlang.org/)
 - [Prisma ORM](https://www.prisma.io/)
-- [PostgreSQL](https://www.sqlite.org/) (ou outro banco de dados suportado pelo Prisma)
+- [PostgreSQL](https://www.postgresql.org/) (ou outro banco de dados suportado pelo Prisma)
 
 ## 🚀 Instalação
 
