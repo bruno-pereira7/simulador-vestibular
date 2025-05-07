@@ -40,7 +40,11 @@ export const login = async (req: Request, res: Response) => {
 
 export const listar = async (req: Request, res: Response) => {
   try {
-    const usuarios: Usuario[] = await prisma.usuario.findMany() // Aqui é onde usamos o tipo Usuario
+    const usuarios = await prisma.usuario.findMany({
+      include: {  // ← Carrega o relacionamento
+        redacoes: true  // ← Inclui as redações
+      }
+    })
     return res.json(usuarios)
   } catch (erro) {
     return res.status(404).json({
