@@ -7,6 +7,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Usuario {
+  id @id @default(uuid())
+  email @unique
+  senha String
+  nome String
+  redacoes Redacao[]
+  criadoEm DateTime @default(now())
+}
 model Questao {
   id String @id @default(uuid())
   ano Int
@@ -46,3 +54,14 @@ model SimuladoQuestao {
   @@unique([simuladoId, posicao])
 }
 
+model Redacao {
+  id String @id @default(uuid())
+  usuarioId String
+  conteudo String
+  correcao String
+  status String @default("pendente")
+  criadoEm DateTime @default(now())
+
+  usuario Usuario @relation(fields:[usuarioId], references[id])
+  @@index([usuarioId])
+}
