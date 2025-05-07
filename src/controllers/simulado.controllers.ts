@@ -94,7 +94,9 @@ export const listarSimulados = async (req: Request, res: Response)=>{
     return res.json(simulados)
   }
   catch(erro){
-    return res.status(500).json({erro: 'Erro ao listar os Simulados', detalhes:erro})
+    return res.status(500).json({
+      erro: 'Erro ao listar os Simulados',
+      detalhes:erro})
   }
 }
 

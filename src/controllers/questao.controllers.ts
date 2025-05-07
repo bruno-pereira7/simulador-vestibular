@@ -19,8 +19,14 @@ export const contar = async (req: Request, res: Response) =>{
 }
 
 export const listar = async (req: Request, res: Response) => {
-  const questoes = await prisma.questao.findMany()
-  res.json(questoes)
+  try{
+    const questoes = await prisma.questao.findMany()
+    return res.json(questoes)
+  } catch (erro) {
+    return res.status(404).json({
+      erro: 'Erro ao encontrar questões',
+      detalhes: erro})
+  }
 }
 
 export const buscarPorId = async (req: Request, res: Response) => {
