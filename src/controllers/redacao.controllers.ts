@@ -31,7 +31,7 @@ export const criarRedação = async (req: Request, res: Response) => {
 
   try{
     const redacao = await prisma.redacao.create({
-      data: { conteudo: texto, usuarioId, status:'pendente'}
+      data: { conteudo: texto, usuarioId, status:'pendente', correcao: ""}
     })
     
     const resposta = await openai.chat.completions.create({
