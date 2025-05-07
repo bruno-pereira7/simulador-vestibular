@@ -8,8 +8,8 @@ datasource db {
 }
 
 model Usuario {
-  id @id @default(uuid())
-  email @unique
+  id String @id @default(uuid())
+  email String @unique
   senha String
   nome String
   redacoes Redacao[]
@@ -55,13 +55,14 @@ model SimuladoQuestao {
 }
 
 model Redacao {
-  id String @id @default(uuid())
+  id        String   @id @default(uuid())
   usuarioId String
-  conteudo String
-  correcao String
-  status String @default("pendente")
-  criadoEm DateTime @default(now())
+  conteudo  String
+  correcao  String
+  status    String   @default("pendente")
+  criadoEm  DateTime @default(now())
 
-  usuario Usuario @relation(fields:[usuarioId], references[id])
+  usuario   Usuario  @relation(fields: [usuarioId], references: [id])
+
   @@index([usuarioId])
 }
