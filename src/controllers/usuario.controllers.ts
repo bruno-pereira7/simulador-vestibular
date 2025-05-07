@@ -22,6 +22,17 @@ export const criar = async (req: Request, res: Response) =>{
   }
 }
 
+export const login = async (req: Request, res: Response) => {
+  const { email, senha } = req.body
+
+  const usuario = prisma.usuario.findUnique({ where: { email } })
+  if(usuario || usuario.senha != senha ){
+    return res.status(401).json({
+      erro: 'Erro ao logar'
+    })
+  } 
+}
+
 export const listar = async (req: Request, res: Response) => {
   try{
     const usuarios = await prisma.usuarios.findMany()
