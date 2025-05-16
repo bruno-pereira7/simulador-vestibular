@@ -1,6 +1,6 @@
 # Simulador de Vestibular 🎓
 
-Um sistema web para criação e gerenciamento de simulados de vestibular, permitindo a geração automática de provas com questões categorizadas por matéria.&#8203;:contentReference[oaicite:0]{index=0}
+Um sistema web para criação e gerenciamento de simulados de vestibular, permitindo a geração automática de provas com questões categorizadas por matéria.
 
 ## 📋 Índice
 
